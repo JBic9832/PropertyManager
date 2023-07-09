@@ -23,6 +23,7 @@ export default function AddProperty() {
   const [loading, setLoading] = useState(false);
 
   const submitProperty = async () => {
+    let cashFlow = 0;
     let pictureServerLocation = "";
     let leaseFileServerLocation = "";
     setLoading(true);
@@ -39,29 +40,30 @@ export default function AddProperty() {
     if (picture) {
       console.log("Starting picture upload");
       const storageRef = ref(storage, `/files/${picture.name}`);
-      const uploadTask = await uploadBytesResumable(storageRef, picture);
+      await uploadBytesResumable(storageRef, picture);
 
       const url = await getDownloadURL(storageRef);
       console.log("Got download url", url.toString()); // This properly logs out the necessary download url
       pictureServerLocation = url.toString();
-
-      const usersRef = collection(db, "users", user.uid, "properties");
-      console.log("Creating the doc");
-
-      const response = await addDoc(usersRef, {
-        propertyName: propertyName,
-        address: address,
-        city: city,
-        zipcode: Number(zipcode),
-        mortgage: Number(mortgage),
-        rentalIncome: Number(rentalIncome),
-        vacancy: vacancy,
-        propertyTax: Number(propertyTax),
-        lease: leaseFileServerLocation,
-        picture: pictureServerLocation, // this is the final upload
-      });
-      if (response) setLoading(false);
     }
+    const usersRef = collection(db, "users", user.uid, "properties");
+    console.log("Creating the doc");
+    cashFlow = rentalIncome - mortgage - propertyTax;
+
+    const response = await addDoc(usersRef, {
+      propertyName: propertyName,
+      address: address,
+      city: city,
+      zipcode: Number(zipcode),
+      mortgage: Number(mortgage),
+      rentalIncome: Number(rentalIncome),
+      vacancy: vacancy,
+      propertyTax: Number(propertyTax),
+      lease: leaseFileServerLocation,
+      picture: pictureServerLocation, // this is the final upload
+      cashFlow,
+    });
+    if (response) setLoading(false);
   };
 
   if (loading) {

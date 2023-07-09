@@ -12,7 +12,7 @@ export default function Properties({}) {
   const [properties, setProperties] = useState();
 
   const getProperties = async () => {
-    const res = await axios.get(`/api/properties/${user.uid}/properties`);
+    const res = await axios.get(`/api/${user.uid}/properties/properties`);
     setProperties(res.data.properties);
   };
 
@@ -20,35 +20,28 @@ export default function Properties({}) {
     if (user) getProperties();
   }, [user]);
 
-  useEffect(() => {
-    if (properties) {
-      properties.map((property) => {
-        const cashflow =
-          property.information.rentalIncome -
-          property.information.mortgage -
-          property.information.propertyTax;
-
-        property.cashflow = cashflow;
-      });
-    }
-  }, [properties]);
-
   return (
     <div>
       {properties ? (
         properties.map((property) => (
           <a key={property.id} href={`/app/properties/${property.id}`}>
             <div className="shadow-xl rounded-xl p-3">
-              <img src={property.information.picture} alt="" />
+              <img
+                src={property.information.picture}
+                alt=""
+                className="w-[200px] sm:w-[800px]"
+              />
               <h1 className="text-xl font-bold">
                 {property.information.address}
               </h1>
               <p
                 className={`font-semibold ${
-                  property.cashflow > 0 ? "text-green-500" : "text-red-500"
+                  property.information.cashFlow > 0
+                    ? "text-green-500"
+                    : "text-red-500"
                 }`}
               >
-                {property.cashflow}
+                {property.information.cashFlow}
               </p>
             </div>
           </a>

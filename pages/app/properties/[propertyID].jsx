@@ -13,12 +13,12 @@ export default function Property() {
   const [property, setProperty] = useState();
 
   const getProperty = async () => {
-    const res = await axios.get(`/api/properties/${user.uid}/${propertyID}`);
+    const res = await axios.get(`/api/${user.uid}/properties/${propertyID}`);
     setProperty(res.data.property);
   };
 
   const deleteProperty = async () => {
-    const res = await axios.delete(`/api/properties/${user.uid}/${propertyID}`);
+    const res = await axios.delete(`/api/${user.uid}/properties/${propertyID}`);
     router.push("/app/properties");
   };
 
@@ -29,10 +29,19 @@ export default function Property() {
   return (
     <div>
       <div>
-        {property ? <h1>{property.propertyName}</h1> : <h1>loading...</h1>}
-        <button className="bg-red-500 p-3 rounded-md" onClick={deleteProperty}>
-          delete
-        </button>
+        {property ? (
+          <div>
+            <h1>{property.propertyName}</h1>
+            <button
+              className="bg-red-500 p-3 rounded-md"
+              onClick={deleteProperty}
+            >
+              delete
+            </button>
+          </div>
+        ) : (
+          <h1>loading...</h1>
+        )}
       </div>
     </div>
   );
