@@ -13,6 +13,13 @@ import { useCallback, useContext, useEffect, useState } from "react";
 export default function SignIn() {
   const { user, username } = useContext(UserContext);
   const auth = getAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/app");
+    }
+  }, [user]);
 
   return (
     <>

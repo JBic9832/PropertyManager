@@ -13,14 +13,14 @@ export default function DashboardLayout({ children }) {
 
   const [open, setOpen] = useState(true);
   return (
-    <>
+    <div>
       <Head>
         <title>Dashboard</title>
       </Head>
       <div
         className={`${
           open ? "sm:flex" : "hidden"
-        } sm:flex-col items-center justify-between fixed left-0 top-0 bottom-0 w-96 p-6 bg-white shadow-xl z-[10000]`}
+        } sm:flex-col items-center justify-between fixed left-0 top-0 bottom-0 md:w-72 lg:w-96 p-6 bg-white shadow-xl z-[10000]`}
       >
         <h1 className="text-3xl font-bold">Landlord DB</h1>
         <div className="w-full">
@@ -73,10 +73,17 @@ export default function DashboardLayout({ children }) {
             <p className="font-semibold">Tenants</p>
           </Link>
         </div>
-        <button onClick={() => setOpen(false)}>Close</button>
+        <button className="sm:hidden" onClick={() => setOpen(false)}>
+          Close
+        </button>
+        <span className="hidden sm:block"></span>
       </div>
-      <button onClick={() => setOpen(true)}>Open</button>
-      <main>{children}</main>
-    </>
+      <div className="ml-96">
+        <button className="sm:hidden" onClick={() => setOpen(true)}>
+          Open
+        </button>
+        <main>{children}</main>
+      </div>
+    </div>
   );
 }

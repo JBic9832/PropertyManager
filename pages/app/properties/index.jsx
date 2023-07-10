@@ -10,6 +10,7 @@ export default function Properties({}) {
   const { user } = useContext(UserContext);
 
   const [properties, setProperties] = useState();
+  const [hoveringAdd, setHoveringAdd] = useState(false);
 
   const getProperties = async () => {
     const res = await axios.get(`/api/${user.uid}/properties/properties`);
@@ -25,31 +26,64 @@ export default function Properties({}) {
       {properties ? (
         properties.map((property) => (
           <a key={property.id} href={`/app/properties/${property.id}`}>
-            <div className="shadow-xl rounded-xl p-3">
+            <div
+              className="w-[200px] sm:w-[800px] 
+            flex flex-col items-center shadow-xl 
+            rounded-xl overflow-hidden"
+            >
               <img
                 src={property.information.picture}
                 alt=""
-                className="w-[200px] sm:w-[800px]"
+                className="object-contain"
               />
-              <h1 className="text-xl font-bold">
-                {property.information.address}
-              </h1>
-              <p
-                className={`font-semibold ${
-                  property.information.cashFlow > 0
-                    ? "text-green-500"
-                    : "text-red-500"
-                }`}
-              >
-                {property.information.cashFlow}
-              </p>
+              <div className="self-start p-4">
+                <h1 className="text-xl font-bold">
+                  {property.information.address}
+                </h1>
+                <p className="font-semibold">
+                  Current Cashflow:{" "}
+                  <span
+                    className={`font-semibold ${
+                      property.information.cashFlow > 0
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {property.information.cashFlow}
+                  </span>
+                </p>
+              </div>
             </div>
           </a>
         ))
       ) : (
         <p>Loading</p>
       )}
-      <Link href="/app/properties/add-property">Add Property</Link>
+      <Link href="/app/properties/add-property">
+        <div
+          onMouseEnter={() => setHoveringAdd(true)}
+          onMouseLeave={() => setHoveringAdd(false)}
+          className="transition ease-in-out delay-150 flex items-center bg-sky-500 text-white p-4 rounded-full fixed right-4 bottom-4 shadow-md"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+          <h1 className={`${hoveringAdd ? "block" : "hidden"}`}>
+            Add property
+          </h1>
+        </div>
+      </Link>
     </div>
   );
 }
