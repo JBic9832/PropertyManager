@@ -5,9 +5,11 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Link from "next/link";
 import { useContext, useState } from "react";
 import Properties from ".";
+import { useRouter } from "next/router";
 
 export default function AddProperty() {
   const { user } = useContext(UserContext);
+  const router = useRouter();
 
   const [propertyName, setPropertyName] = useState();
   const [address, setAddress] = useState();
@@ -63,7 +65,10 @@ export default function AddProperty() {
       picture: pictureServerLocation, // this is the final upload
       cashFlow,
     });
-    if (response) setLoading(false);
+    if (response) {
+      setLoading(false);
+      router.back();
+    }
   };
 
   if (loading) {

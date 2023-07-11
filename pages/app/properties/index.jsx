@@ -13,7 +13,7 @@ export default function Properties({}) {
   const [hoveringAdd, setHoveringAdd] = useState(false);
 
   const getProperties = async () => {
-    const res = await axios.get(`/api/${user.uid}/properties/properties`);
+    const res = await axios.get(`/api/${user.uid}/properties`);
     setProperties(res.data.properties);
   };
 
@@ -24,38 +24,44 @@ export default function Properties({}) {
   return (
     <div>
       {properties ? (
-        properties.map((property) => (
-          <a key={property.id} href={`/app/properties/${property.id}`}>
-            <div
-              className="w-[200px] sm:w-[800px] 
+        properties.length > 0 ? (
+          properties.map((property) => (
+            <a key={property.id} href={`/app/properties/${property.id}`}>
+              <div
+                className="w-[200px] sm:w-[800px] 
             flex flex-col items-center shadow-xl 
             rounded-xl overflow-hidden"
-            >
-              <img
-                src={property.information.picture}
-                alt=""
-                className="object-contain"
-              />
-              <div className="self-start p-4">
-                <h1 className="text-xl font-bold">
-                  {property.information.address}
-                </h1>
-                <p className="font-semibold">
-                  Current Cashflow:{" "}
-                  <span
-                    className={`font-semibold ${
-                      property.information.cashFlow > 0
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }`}
-                  >
-                    {property.information.cashFlow}
-                  </span>
-                </p>
+              >
+                <img
+                  src={property.information.picture}
+                  alt=""
+                  className="object-contain"
+                />
+                <div className="self-start p-4">
+                  <h1 className="text-xl font-bold">
+                    {property.information.address}
+                  </h1>
+                  <p className="font-semibold">
+                    Current Cashflow:{" "}
+                    <span
+                      className={`font-semibold ${
+                        property.information.cashFlow > 0
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {property.information.cashFlow}
+                    </span>
+                  </p>
+                </div>
               </div>
-            </div>
-          </a>
-        ))
+            </a>
+          ))
+        ) : (
+          <div>
+            <h1>Looks like you have no properties added.</h1>
+          </div>
+        )
       ) : (
         <p>Loading</p>
       )}
@@ -69,7 +75,7 @@ export default function Properties({}) {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            strokeWidth={1.5}
+            strokeWidth={1.8}
             stroke="currentColor"
             className="w-6 h-6"
           >
