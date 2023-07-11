@@ -13,7 +13,9 @@ export default function Properties({}) {
   const [hoveringAdd, setHoveringAdd] = useState(false);
 
   const getProperties = async () => {
-    const res = await axios.get(`/api/${user.uid}/properties`);
+    const res = await axios.get(`/api/${user.uid}/properties`).catch((e) => {
+      console.log(e);
+    });
     setProperties(res.data.properties);
   };
 

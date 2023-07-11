@@ -18,6 +18,8 @@ export default async (req, res) => {
       properties,
     });
   } catch (e) {
-    res.status(400).end();
+    res.status(400).json({
+      userID,
+    });
   }
 };
