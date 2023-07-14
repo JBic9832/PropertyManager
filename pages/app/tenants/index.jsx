@@ -11,8 +11,15 @@ export default function Tenants({}) {
   const [hoveringAdd, setHoveringAdd] = useState(false);
 
   const getTenants = async () => {
-    const res = await axios.get(`/api/${user.uid}/tenants`);
-    setTenants(res.data.tenants);
+    let documents = [];
+    const tenantsRef = query(collection(db, "users", user.id, "tenants"));
+    const snapshot = await getDocs(tenantsRef);
+
+    snapshot.docs.map((doc) => {
+      documents.push({ information: doc.data(), id: doc.id });
+    });
+
+    setTenants(documents);
   };
 
   useEffect(() => {

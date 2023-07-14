@@ -8,6 +8,7 @@ export default async (req, res) => {
 
   try {
     const propertiesRef = query(collection(db, "users", userID, "properties"));
+    console.log("Test");
     const snapshot = await getDocs(propertiesRef);
 
     snapshot.docs.map((doc) => {

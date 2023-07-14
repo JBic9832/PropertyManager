@@ -16,10 +16,10 @@ export default function SignIn() {
   const router = useRouter();
 
   useEffect(() => {
-    if (user) {
+    if (user && username) {
       router.push("/app");
     }
-  }, [user]);
+  }, [user, username]);
 
   return (
     <>
@@ -88,7 +88,7 @@ const UsernameForm = () => {
     batch.set(usernameDoc, { uid: user.uid });
 
     await batch.commit();
-    router.push("/dashboard");
+    router.push("/app");
   };
 
   const onChange = (e) => {

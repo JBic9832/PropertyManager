@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useContext, useState } from "react";
 import Properties from ".";
 import { useRouter } from "next/router";
+import { getAuth } from "firebase/auth";
 
 export default function AddProperty() {
   const { user } = useContext(UserContext);
@@ -48,7 +49,12 @@ export default function AddProperty() {
       console.log("Got download url", url.toString()); // This properly logs out the necessary download url
       pictureServerLocation = url.toString();
     }
-    const usersRef = collection(db, "users", user.uid, "properties");
+    const usersRef = collection(
+      db,
+      "users",
+      getAuth().currentUser.uid,
+      "properties"
+    );
     console.log("Creating the doc");
     cashFlow = rentalIncome - mortgage - propertyTax;
 

@@ -5,6 +5,7 @@ import { collection, getDocs, query } from "firebase/firestore";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import MainApp from "..";
+import { getAuth } from "firebase/auth";
 
 export default function Properties({}) {
   const { user } = useContext(UserContext);
@@ -13,10 +14,16 @@ export default function Properties({}) {
   const [hoveringAdd, setHoveringAdd] = useState(false);
 
   const getProperties = async () => {
-    const res = await axios.get(`/api/${user.uid}/properties`).catch((e) => {
-      console.log(e);
+    let documents = [];
+    const propertiesRef = query(
+      collection(db, "users", user.uid, "properties")
+    );
+    const snapshot = await getDocs(propertiesRef);
+    snapshot.docs.map((doc) => {
+      documents.push({ information: doc.data(), id: doc.id });
     });
-    setProperties(res.data.properties);
+
+    setProperties(documents);
   };
 
   useEffect(() => {
