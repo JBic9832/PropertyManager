@@ -1,11 +1,9 @@
 import { UserContext } from "@/lib/context";
 import { db } from "@/lib/firebase";
-import axios from "axios";
 import { collection, getDocs, query } from "firebase/firestore";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import MainApp from "..";
-import { getAuth } from "firebase/auth";
 
 export default function Properties({}) {
   const { user } = useContext(UserContext);
@@ -32,48 +30,25 @@ export default function Properties({}) {
 
   return (
     <div>
-      {properties ? (
-        properties.length > 0 ? (
-          properties.map((property) => (
-            <a key={property.id} href={`/app/properties/${property.id}`}>
-              <div
-                className="w-[200px] sm:w-[800px] 
-            flex flex-col items-center shadow-xl 
-            rounded-xl overflow-hidden"
-              >
-                <img
-                  src={property.information.picture}
-                  alt=""
-                  className="object-contain"
-                />
-                <div className="self-start p-4">
-                  <h1 className="text-xl font-bold">
-                    {property.information.address}
-                  </h1>
-                  <p className="font-semibold">
-                    Current Cashflow:{" "}
-                    <span
-                      className={`font-semibold ${
-                        property.information.cashFlow > 0
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {property.information.cashFlow}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </a>
-          ))
+      <div>
+        <h1>All Properties</h1>
+        {properties ? (
+          properties.length > 0 ? (
+            <table>
+              <tr>
+                <th>Address</th>
+                <th>Cashflow</th>
+              </tr>
+            </table>
+          ) : (
+            <h1>It looks like you haven't added any properties yet.</h1>
+          )
         ) : (
           <div>
-            <h1>Looks like you have no properties added.</h1>
+            <h1>Loading...</h1>
           </div>
-        )
-      ) : (
-        <p>Loading</p>
-      )}
+        )}
+      </div>
       <Link href="/app/properties/add-property">
         <div
           onMouseEnter={() => setHoveringAdd(true)}

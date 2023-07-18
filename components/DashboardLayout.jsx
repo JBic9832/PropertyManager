@@ -7,9 +7,8 @@ export default function DashboardLayout({ children }) {
   const router = useRouter();
 
   const activeClass =
-    "bg-black rounded-full text-white w-full p-4 text-left flex gap-6 items-center";
-  const inactiveClass =
-    "rounded-full w-full p-4 text-left flex gap-6 items-center";
+    "bg-black border-2 text-white w-full p-4 text-left flex gap-6 items-center";
+  const inactiveClass = "w-full p-4 text-left flex gap-6 items-center";
 
   const [open, setOpen] = useState(true);
   return (
@@ -20,10 +19,12 @@ export default function DashboardLayout({ children }) {
       <div
         className={`${
           open ? "sm:flex" : "hidden"
-        } sm:flex-col items-center justify-between fixed left-0 top-0 bottom-0 md:w-72 lg:w-96 p-6 bg-white shadow-xl z-[10000]`}
+        } sm:flex-col items-center fixed left-0 top-0 bottom-0 md:w-72 lg:w-96 bg-white border-r-2 z-[10000]`}
       >
-        <h1 className="text-3xl font-bold">Landlord DB</h1>
-        <div className="w-full">
+        <div className="p-6 border-b-2 mb-2 w-full">
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+        </div>
+        <div className="w-full p-6">
           <Link
             href="/app/properties"
             className={

@@ -16,7 +16,7 @@ export default function Navbar({}) {
   };
 
   return (
-    <nav className="flex justify-between items-center">
+    <nav className="flex justify-between items-center p-6 border-b-2">
       <h1 className="text-3xl font-bold">Landlords oasis</h1>
       <div className="flex gap-4">
         <Link href="/">home</Link>

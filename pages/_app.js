@@ -36,7 +36,7 @@ export default function App({ Component, pageProps, router }) {
 
   return getLayout(
     <>
-      <div className="p-3">
+      <div>
         <UserContext.Provider value={userData}>
           <Navbar />
           <div className="flex flex-col items-center justify-center h-screen">
