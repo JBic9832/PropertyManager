@@ -53,7 +53,7 @@ const SignInButton = ({ auth }) => {
     signInWithRedirect(auth, googleAuthProvider);
   };
   return (
-    <button className="flex items-center shadow-md p-3">
+    <button onClick={signIn} className="flex items-center shadow-md p-3">
       <img className="w-9 h-9" src="/img/google_icon.svg" alt="google icon" />
       <h1>Sign in with Google.</h1>
     </button>
