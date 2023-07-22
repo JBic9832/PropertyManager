@@ -110,8 +110,24 @@ export default function Property() {
               </p>
             </div>
             <p>{property.address}</p>
-            <p>Tenants:</p>
-            {tenants ? tenants.map((t) => <p>{t.name}</p>) : <p>Error</p>}
+            <p>
+              {tenants.length <= 1 ? (
+                <span>Tenant: </span>
+              ) : (
+                <span>Tenants: </span>
+              )}
+              {tenants ? (
+                tenants.map((t, idx) =>
+                  idx == tenants.length - 1 ? (
+                    <span>{t.name}</span>
+                  ) : (
+                    <span>{t.name}, </span>
+                  )
+                )
+              ) : (
+                <span>There are no tenants.</span>
+              )}
+            </p>
 
             <button className="text-red-500" onClick={deleteProperty}>
               delete
