@@ -45,7 +45,7 @@ export default function Tenants({}) {
 
   return (
     <div className="p-6 md:p-10 lg:p-14">
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-4">
         <h1 className="mb-3 md:mb-6 lg:mb-10">All Tenants</h1>
         {tenants ? (
           tenants.length > 0 ? (
