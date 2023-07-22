@@ -17,15 +17,13 @@ export default function DefaultDrawerMenu({ isMenuOpen, changeMenuState }) {
     <MobileDrawerMenu isMenuOpen={isMenuOpen} changeMenuState={changeMenuState}>
       <MobileDrawerOption href="/" text="Home" />
       <MobileDrawerOption href="/pricing" text="Pricing" />
-      <MobileDrawerOption
-        href="/app"
-        className={user ? "block" : "hidden"}
-        text="Dashboard"
-      />
       {user ? (
-        <h1 className="w-full" onClick={signOut}>
-          Sign out
-        </h1>
+        <>
+          <MobileDrawerOption href="/app" text="Dashboard" />
+          <h1 className="w-full" onClick={signOut}>
+            Sign out
+          </h1>
+        </>
       ) : (
         <MobileDrawerOption href="signin" text="Sign in" />
       )}

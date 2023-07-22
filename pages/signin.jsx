@@ -35,7 +35,12 @@ export default function SignIn() {
               <SignOutButton username={username} auth={auth} />
             )
           ) : (
-            <SignInButton auth={auth} />
+            <div className="flex flex-col items-center justify-center h-[100dvh]">
+              <SignInButton auth={auth} />
+              <h1 className="text-sm mt-4">
+                Note: other sign in methods coming shortly.
+              </h1>
+            </div>
           )}
         </div>
       </main>
@@ -48,9 +53,10 @@ const SignInButton = ({ auth }) => {
     signInWithRedirect(auth, googleAuthProvider);
   };
   return (
-    <Button css="p-3" onClick={signIn}>
-      Sign in
-    </Button>
+    <button className="flex items-center shadow-md p-3">
+      <img className="w-9 h-9" src="/img/google_icon.svg" alt="google icon" />
+      <h1>Sign in with Google.</h1>
+    </button>
   );
 };
 
