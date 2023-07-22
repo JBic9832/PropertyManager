@@ -17,11 +17,7 @@ export default function DashboardLayout({ children }) {
       <Head>
         <title>Dashboard</title>
       </Head>
-      <div
-        className={`${
-          open ? "sm:flex" : "hidden"
-        } sm:flex-col items-center fixed left-0 top-0 bottom-0 md:w-72 lg:w-96 border-r-2 z-[10000]`}
-      >
+      <div className="hidden sm:flex flex-col items-center fixed left-0 top-0 bottom-0 md:w-72 lg:w-96 bg-white border-r-2 z-[10000]">
         <div className="p-6 border-b-2 mb-2 w-full">
           <h1 className="text-3xl font-bold">Dashboard</h1>
         </div>
