@@ -24,20 +24,28 @@ export default function Navbar({}) {
       <div className="gap-4 hidden sm:flex">
         <Link href="/">Home</Link>
         <Link href="/pricing">Pricing</Link>
-        {user ? (
-          <>
-            <Link href="/app">Dashboard</Link>
-            <button onClick={signOut}>Sign out</button>
-          </>
-        ) : (
-          user && (
+        {
+          user ? (
             <>
+              <Link href="/app">Dashboard</Link>
+              <button onClick={signOut}>Sign out</button>
               <h1 className={user ? "block" : "hidden w-0"}>
                 {username ? username : user.email}
               </h1>
             </>
+          ) : (
+            <Link href="/signin">Sign in</Link>
           )
-        )}
+          // : (
+          //   user && (
+          //     <>
+          //       <h1 className={user ? "block" : "hidden w-0"}>
+          //         {username ? username : user.email}
+          //       </h1>
+          //     </>
+          //   )
+          // )
+        }
       </div>
       <div
         className={`${isMenuOpen ? "hidden" : "block"} sm:hidden`}
