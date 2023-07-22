@@ -39,7 +39,8 @@ export default function App({ Component, pageProps, router }) {
       <div>
         <UserContext.Provider value={userData}>
           <Navbar />
-          <div className="flex flex-col items-center justify-center h-screen">
+          <div /*className="flex flex-col items-center justify-center h-screen"*/
+          >
             <Component {...pageProps} />
           </div>
         </UserContext.Provider>

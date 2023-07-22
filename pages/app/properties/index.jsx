@@ -4,6 +4,7 @@ import { collection, getDocs, query } from "firebase/firestore";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import MainApp from "..";
+import PropertyCard from "@/components/PropertyCard";
 
 export default function Properties({}) {
   const { user } = useContext(UserContext);
@@ -13,13 +14,17 @@ export default function Properties({}) {
 
   const getProperties = async () => {
     let documents = [];
-    const propertiesRef = query(
-      collection(db, "users", user.uid, "properties")
-    );
-    const snapshot = await getDocs(propertiesRef);
-    snapshot.docs.map((doc) => {
-      documents.push({ information: doc.data(), id: doc.id });
-    });
+    try {
+      const propertiesRef = query(
+        collection(db, "users", user.uid, "properties")
+      );
+      const snapshot = await getDocs(propertiesRef);
+      snapshot.docs.map((doc) => {
+        documents.push({ information: doc.data(), id: doc.id });
+      });
+    } catch (e) {
+      console.error(e);
+    }
 
     setProperties(documents);
   };
@@ -29,17 +34,20 @@ export default function Properties({}) {
   }, [user]);
 
   return (
-    <div>
+    <div className="p-6 md:p-10 lg:p-14">
       <div>
-        <h1>All Properties</h1>
+        <h1 className="mb-3 md:mb-6 lg:mb-10">All Properties</h1>
         {properties ? (
           properties.length > 0 ? (
-            <table>
-              <tr>
-                <th>Address</th>
-                <th>Cashflow</th>
-              </tr>
-            </table>
+            properties.map((property) => (
+              <PropertyCard
+                picture={property.information.picture}
+                propertyName={property.information.propertyName}
+                address={property.information.address}
+                cashFlow={property.information.cashFlow}
+                key={property.id}
+              />
+            ))
           ) : (
             <h1>It looks like you haven't added any properties yet.</h1>
           )
@@ -49,6 +57,7 @@ export default function Properties({}) {
           </div>
         )}
       </div>
+      {/* Add property button */}
       <Link href="/app/properties/add-property">
         <div
           onMouseEnter={() => setHoveringAdd(true)}

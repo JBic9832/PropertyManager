@@ -9,10 +9,38 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1 className="text-3xl underline font-bold">
-          Information about the product
-        </h1>
+      <main className="px-6 md:px-16 lg:px-24 mt-6 sm:mt-16">
+        {/* Hero Section */}
+        <div className="lg:flex items-center">
+          <div className="lg:w-[50%]">
+            <h1 className="text-3xl md:text-5xl lg:font-6xl font-extrabold">
+              An easy way for landlords to keep track of their properties and
+              tenants
+            </h1>
+            <p className="md:text-lg lg:text-xl mt-3">
+              Keep track of leasing information, tenants info, cashflow, and
+              much more. The goal is to ensure that you never touch another
+              messy spreadsheet again.
+            </p>
+            <div className="flex mt-6 justify-between sm:justify-evenly">
+              <a href="/">
+                <h1 className="text-xl border-2 text-white border-sky-500 hover:bg-transparent hover:text-black bg-sky-500 px-6 py-4">
+                  Learn more
+                </h1>
+              </a>
+              <a href="/">
+                <h1 className="text-xl border-2 hover:bg-sky-500 hover:text-white border-sky-500 px-6 py-4">
+                  Contact
+                </h1>
+              </a>
+            </div>
+          </div>
+          <img
+            className="lg:w-[50%] mt-10 lg:mt-0"
+            src="/img/houses.svg"
+            alt="Image of a lady with homes on a desk"
+          />
+        </div>
       </main>
     </>
   );

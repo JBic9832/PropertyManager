@@ -1,8 +1,9 @@
 import Link from "next/link";
 import MainApp from "..";
+import { db } from "@/lib/firebase";
 import { useContext, useEffect, useState } from "react";
+import { collection, getDocs, query } from "firebase/firestore";
 import { UserContext } from "@/lib/context";
-import axios from "axios";
 
 export default function Tenants({}) {
   const { user } = useContext(UserContext);
@@ -10,40 +11,47 @@ export default function Tenants({}) {
   const [tenants, setTenants] = useState();
   const [hoveringAdd, setHoveringAdd] = useState(false);
 
-  const getTenants = async () => {
+  const getTenats = async () => {
     let documents = [];
-    const tenantsRef = query(collection(db, "users", user.id, "tenants"));
-    const snapshot = await getDocs(tenantsRef);
-
-    snapshot.docs.map((doc) => {
-      documents.push({ information: doc.data(), id: doc.id });
-    });
+    try {
+      const tenantsRef = query(collection(db, "users", user.uid, "tenants"));
+      const snapshot = await getDocs(tenantsRef);
+      snapshot.docs.map((doc) => {
+        documents.push({ information: doc.data(), id: doc.id });
+      });
+    } catch (e) {
+      console.error(e);
+    }
 
     setTenants(documents);
   };
 
   useEffect(() => {
-    if (user) getTenants();
+    if (user) getTenats();
   }, [user]);
 
   return (
     <div>
-      {/* Turnary hell */}
-      {tenants ? (
-        tenants.length > 0 ? (
-          tenants.map((tenant) => (
-            <a key={tenant.id} href={`/app/tenants/${tenant.id}`}>
-              <h1>This is a tenant</h1>
-            </a>
-          ))
+      <div>
+        <h1>All Tenants</h1>
+        {tenants ? (
+          tenants.length > 0 ? (
+            <table>
+              <tr>
+                <th>Address</th>
+                <th>Cashflow</th>
+              </tr>
+            </table>
+          ) : (
+            <h1>It looks like you haven't added any tenants yet.</h1>
+          )
         ) : (
           <div>
-            <h1>Looks like you have no tenants.</h1>
+            <h1>Loading...</h1>
           </div>
-        )
-      ) : (
-        <p>Loading...</p>
-      )}
+        )}
+      </div>
+      {/* Add tenant button */}
       <Link href="/app/tenants/add-tenant">
         <div
           onMouseEnter={() => setHoveringAdd(true)}
@@ -64,7 +72,7 @@ export default function Tenants({}) {
               d="M12 4.5v15m7.5-7.5h-15"
             />
           </svg>
-          <h1 className={`${hoveringAdd ? "block" : "hidden"}`}>Add tenant</h1>
+          <h1 className={`${hoveringAdd ? "block" : "hidden"}`}>Add Tenant</h1>
         </div>
       </Link>
     </div>

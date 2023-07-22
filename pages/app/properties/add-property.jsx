@@ -86,8 +86,7 @@ export default function AddProperty() {
   }
 
   return (
-    <div className="flex flex-col">
-      <Link href="/app/properties">{"<"} Back</Link>
+    <div className="flex flex-col items-center p-6 md:p-10 lg:p-14">
       <input
         type="file"
         placeholder="Picture"
@@ -141,6 +140,9 @@ export default function AddProperty() {
         onChange={(e) => setLeaseFile(e.target.files[0])}
       />
       <button onClick={submitProperty}>Submit</button>
+      <Link className="text-red-400" href="/app/properties">
+        Cancel
+      </Link>
     </div>
   );
 }
