@@ -2,12 +2,19 @@ import { useContext } from "react";
 import MobileDrawerMenu from "./MobileDrawerMenu";
 import MobileDrawerOption from "./MobileDrawerOption";
 import { UserContext } from "@/lib/context";
-import { signOut } from "firebase/auth";
+import { useRouter } from "next/router";
+import { auth } from "@/lib/firebase";
 
-export default function DashboardDrawerMenu({ isMenuOpen }) {
+export default function DashboardDrawerMenu({ isMenuOpen, changeMenuState }) {
   const { user, username } = useContext(UserContext);
+  const router = useRouter();
+
+  const signOut = () => {
+    auth.signOut();
+    router.push("/");
+  };
   return (
-    <MobileDrawerMenu isMenuOpen={isMenuOpen}>
+    <MobileDrawerMenu isMenuOpen={isMenuOpen} changeMenuState={changeMenuState}>
       <MobileDrawerOption href="/app" text="Dashboard" />
       <MobileDrawerOption href="/app/properties" text="Properties" />
       <MobileDrawerOption href="/app/tenants" text="Tenants" />

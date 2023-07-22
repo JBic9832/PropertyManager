@@ -19,13 +19,16 @@ export default function Navbar({}) {
   };
 
   return (
-    <nav className="flex justify-between items-center p-6 border-b-2">
-      <h1 className="text-3xl font-bold">Landlords oasis</h1>
+    <nav className="flex justify-between items-center p-6 border-b-2 lg:sticky lg:top-0 bg-white">
+      <h1 className="text-3xl font-bold">Property Manager</h1>
       <div className="gap-4 hidden sm:flex">
-        <Link href="/">home</Link>
-        <Link href="/pricing">pricing</Link>
+        <Link href="/">Home</Link>
+        <Link href="/pricing">Pricing</Link>
         {user ? (
-          <button onClick={signOut}>sign out</button>
+          <>
+            <Link href="/app">Dashboard</Link>
+            <button onClick={signOut}>Sign out</button>
+          </>
         ) : (
           user && (
             <>

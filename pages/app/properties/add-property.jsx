@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useContext, useState } from "react";
 import Properties from ".";
 import { useRouter } from "next/router";
-import { getAuth } from "firebase/auth";
 
 export default function AddProperty() {
   const { user } = useContext(UserContext);
@@ -30,6 +29,8 @@ export default function AddProperty() {
     let pictureServerLocation = "";
     let leaseFileServerLocation = "";
     setLoading(true);
+
+    // Put the lease file in the storage bucket
     if (leaseFile) {
       const storageRef = ref(storage, `/files/${leaseFile.name}`);
 
@@ -40,22 +41,17 @@ export default function AddProperty() {
       });
     }
 
+    // Put the picture in the storage bucket
     if (picture) {
       console.log("Starting picture upload");
       const storageRef = ref(storage, `/files/${picture.name}`);
       await uploadBytesResumable(storageRef, picture);
 
       const url = await getDownloadURL(storageRef);
-      console.log("Got download url", url.toString()); // This properly logs out the necessary download url
       pictureServerLocation = url.toString();
     }
-    const usersRef = collection(
-      db,
-      "users",
-      getAuth().currentUser.uid,
-      "properties"
-    );
-    console.log("Creating the doc");
+    const usersRef = collection(db, "users", user.uid, "properties");
+
     cashFlow = rentalIncome - mortgage - propertyTax;
 
     const response = await addDoc(usersRef, {
@@ -70,6 +66,7 @@ export default function AddProperty() {
       lease: leaseFileServerLocation,
       picture: pictureServerLocation, // this is the final upload
       cashFlow,
+      dateAdded: new Date(),
     });
     if (response) {
       setLoading(false);
@@ -86,7 +83,7 @@ export default function AddProperty() {
   }
 
   return (
-    <div className="flex flex-col items-center p-6 md:p-10 lg:p-14">
+    <div className="flex flex-col gap-4 items-center p-6 md:p-10 lg:p-14">
       <input
         type="file"
         placeholder="Picture"
@@ -139,8 +136,10 @@ export default function AddProperty() {
         id="lease"
         onChange={(e) => setLeaseFile(e.target.files[0])}
       />
-      <button onClick={submitProperty}>Submit</button>
-      <Link className="text-red-400" href="/app/properties">
+      <button onClick={submitProperty} className="mt-4">
+        Submit
+      </button>
+      <Link className="text-red-400 mt-4" href="/app/properties">
         Cancel
       </Link>
     </div>

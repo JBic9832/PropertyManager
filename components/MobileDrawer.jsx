@@ -19,9 +19,15 @@ export default function MobileDrawer({ isMenuOpen, changeMenuState }) {
         } fixed left-0 top-0 bottom-0 h-[100dvh] w-full bg-black/[0.6]`}
       ></div>
       {router.pathname.startsWith("/app") ? (
-        <DashboardDrawerMenu isMenuOpen={isMenuOpen} />
+        <DashboardDrawerMenu
+          isMenuOpen={isMenuOpen}
+          changeMenuState={changeMenuState}
+        />
       ) : (
-        <DefaultDrawerMenu isMenuOpen={isMenuOpen} />
+        <DefaultDrawerMenu
+          isMenuOpen={isMenuOpen}
+          changeMenuState={changeMenuState}
+        />
       )}
     </>
   );

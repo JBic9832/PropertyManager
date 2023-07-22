@@ -1,4 +1,8 @@
-export default function MobileDrawerMenu({ children, isMenuOpen }) {
+export default function MobileDrawerMenu({
+  children,
+  isMenuOpen,
+  changeMenuState,
+}) {
   return (
     <div
       className={`${

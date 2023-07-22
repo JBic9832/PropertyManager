@@ -1,6 +1,6 @@
 import { UserContext } from "@/lib/context";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import MainApp from "..";
@@ -18,7 +18,8 @@ export default function Properties({}) {
       const propertiesRef = query(
         collection(db, "users", user.uid, "properties")
       );
-      const snapshot = await getDocs(propertiesRef);
+      const propsInOrder = query(propertiesRef, orderBy("dateAdded", "desc"));
+      const snapshot = await getDocs(propsInOrder);
       snapshot.docs.map((doc) => {
         documents.push({ information: doc.data(), id: doc.id });
       });
@@ -35,7 +36,7 @@ export default function Properties({}) {
 
   return (
     <div className="p-6 md:p-10 lg:p-14">
-      <div>
+      <div className="flex flex-col gap-4">
         <h1 className="mb-3 md:mb-6 lg:mb-10">All Properties</h1>
         {properties ? (
           properties.length > 0 ? (
@@ -45,6 +46,7 @@ export default function Properties({}) {
                 propertyName={property.information.propertyName}
                 address={property.information.address}
                 cashFlow={property.information.cashFlow}
+                id={property.id}
                 key={property.id}
               />
             ))

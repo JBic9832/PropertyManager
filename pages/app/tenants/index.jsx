@@ -2,11 +2,13 @@ import Link from "next/link";
 import MainApp from "..";
 import { db } from "@/lib/firebase";
 import { useContext, useEffect, useState } from "react";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, query } from "firebase/firestore";
 import { UserContext } from "@/lib/context";
+import { useRouter } from "next/router";
 
 export default function Tenants({}) {
   const { user } = useContext(UserContext);
+  const router = useRouter();
 
   const [tenants, setTenants] = useState();
   const [hoveringAdd, setHoveringAdd] = useState(false);
@@ -26,22 +28,45 @@ export default function Tenants({}) {
     setTenants(documents);
   };
 
+  const deleteTenant = async (id) => {
+    try {
+      const docRef = doc(db, "users", user.uid, "tenants", id);
+      await deleteDoc(docRef);
+
+      router.reload();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     if (user) getTenats();
   }, [user]);
 
   return (
-    <div>
-      <div>
-        <h1>All Tenants</h1>
+    <div className="p-6 md:p-10 lg:p-14">
+      <div className="flex flex-col">
+        <h1 className="mb-3 md:mb-6 lg:mb-10">All Tenants</h1>
         {tenants ? (
           tenants.length > 0 ? (
-            <table>
-              <tr>
-                <th>Address</th>
-                <th>Cashflow</th>
-              </tr>
-            </table>
+            tenants.map((tenant) => (
+              <div
+                className="flex justify-between p-2 md:p-4 lg:p-6 shadow-md"
+                key={tenant.id}
+              >
+                <div>
+                  <h1>{tenant.information.name}</h1>
+                  <p>{tenant.information.email}</p>
+                  <p>{tenant.information.residentOf}</p>
+                </div>
+                <button
+                  onClick={() => deleteTenant(tenant.id)}
+                  className="text-red-500"
+                >
+                  Delete
+                </button>
+              </div>
+            ))
           ) : (
             <h1>It looks like you haven't added any tenants yet.</h1>
           )
