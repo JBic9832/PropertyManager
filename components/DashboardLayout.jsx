@@ -1,3 +1,4 @@
+import { signOut } from "firebase/auth";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -16,11 +17,15 @@ export default function DashboardLayout({ children }) {
       <Head>
         <title>Dashboard</title>
       </Head>
-      <div className="hidden sm:flex flex-col items-center fixed left-0 top-0 bottom-0 md:w-72 lg:w-96 bg-white border-r-2 z-[10000]">
+      <div
+        className={`${
+          open ? "sm:flex" : "hidden"
+        } sm:flex-col items-center fixed left-0 top-0 bottom-0 md:w-72 lg:w-96 border-r-2 z-[10000]`}
+      >
         <div className="p-6 border-b-2 mb-2 w-full">
           <h1 className="text-3xl font-bold">Dashboard</h1>
         </div>
-        <div className="w-full p-6">
+        <div className="w-full p-6 justify-between">
           <Link
             href="/app/properties"
             className={
@@ -70,10 +75,28 @@ export default function DashboardLayout({ children }) {
             <p className="font-semibold">Tenants</p>
           </Link>
         </div>
-        <button className="sm:hidden" onClick={() => setOpen(false)}>
-          Close
-        </button>
-        <span className="hidden sm:block"></span>
+        <div className="mt-auto p-6 self-start w-full">
+          <button
+            onClick={() => signOut()}
+            className="flex pl-4 w-full gap-6 p-4 font-semibold"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.8}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+              />
+            </svg>
+            Sign Out
+          </button>
+        </div>
       </div>
       <div className="md:ml-72 lg:ml-96">
         <main>{children}</main>

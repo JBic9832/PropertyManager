@@ -19,23 +19,34 @@ export default function Navbar({}) {
   };
 
   return (
-    <nav className="flex justify-between items-center p-6 border-b-2">
-      <h1 className="text-3xl font-bold">Landlords oasis</h1>
-      <div className="gap-4 hidden sm:flex">
-        <Link href="/">home</Link>
-        <Link href="/pricing">pricing</Link>
-        {user ? (
-          <button onClick={signOut}>sign out</button>
+    <nav className="flex sticky top-0 justify-between items-center p-6 border-b-2">
+      <Link href="/">
+        <h1 className="text-3xl font-bold">Landlords oasis</h1>
+      </Link>
+      <div className="flex gap-4">
+        {!router.pathname.includes("/app") ? (
+          <>
+            <Link href="/">home</Link>
+            <Link href="/pricing">pricing</Link>
+            {user ? (
+              <>
+                <Link href="/app" className={user ? "block" : "hidden"}>
+                  dashboard
+                </Link>
+                <button onClick={signOut}>sign out</button>
+              </>
+            ) : (
+              <Link href="signin">sign in</Link>
+            )}
+          </>
         ) : (
-          <Link href="signin">sign in</Link>
-        )}
-        <Link href="/app" className={user ? "block" : "hidden"}>
-          dashboard
-        </Link>
-        {user && (
-          <h1 className={user ? "block" : "hidden w-0"}>
-            {username ? username : user.email}
-          </h1>
+          user && (
+            <>
+              <h1 className={user ? "block" : "hidden w-0"}>
+                {username ? username : user.email}
+              </h1>
+            </>
+          )
         )}
       </div>
       <div
