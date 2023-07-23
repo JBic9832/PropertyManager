@@ -1,7 +1,13 @@
 import Button from "@/components/Button";
 import { UserContext } from "@/lib/context";
 import { db, googleAuthProvider } from "@/lib/firebase";
-import { getAuth, signInWithRedirect } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signInWithRedirect,
+} from "firebase/auth";
 import { doc, getDoc, setDoc, writeBatch } from "firebase/firestore";
 import { debounce } from "lodash";
 import Head from "next/head";
@@ -49,14 +55,106 @@ export default function SignIn() {
 }
 
 const SignInButton = ({ auth }) => {
-  const signIn = () => {
-    signInWithRedirect(auth, googleAuthProvider);
+  const [hasAccount, setHasAccount] = useState(false);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [error, setError] = useState("");
+  const signInWithGoogle = async () => {
+    await signInWithPopup(auth, googleAuthProvider);
+  };
+
+  const createNewUser = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+    } catch (e) {
+      setError(e.message);
+    }
+  };
+
+  const manualSignIn = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (e) {
+      setError(e.message);
+    }
   };
   return (
-    <button onClick={signIn} className="flex items-center shadow-md p-3">
-      <img className="w-9 h-9" src="/img/google_icon.svg" alt="google icon" />
-      <h1>Sign in with Google.</h1>
-    </button>
+    <div>
+      {hasAccount ? (
+        <div className="flex flex-col gap-2 mb-6">
+          <h1>
+            Sign in to your account.{" "}
+            <span
+              onClick={() => setHasAccount(false)}
+              className="text-sky-500 underline hover:cursor-pointer"
+            >
+              I don't have one
+            </span>
+          </h1>
+          <input
+            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Email"
+          />
+          <input
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="Password"
+          />
+          <div className="flex justify-center">
+            <button onClick={manualSignIn} className="bg-sky-500 w-[50%] p-2">
+              Sign in
+            </button>
+          </div>
+          <p className="text-red-500">{error}</p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2 mb-6">
+          <h1>
+            Create a new account.{" "}
+            <span
+              onClick={() => setHasAccount(true)}
+              className="text-sky-500 underline hover:cursor-pointer"
+            >
+              I already have one
+            </span>
+          </h1>
+          <input
+            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Email"
+          />
+          <input
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="Password"
+          />
+          <div className="flex justify-center">
+            <button onClick={createNewUser} className="bg-sky-500 w-[50%] p-2">
+              Sign up
+            </button>
+          </div>
+          <p className="text-red-500">{error}</p>
+        </div>
+      )}
+      <div className="flex justify-center">
+        <button
+          onClick={signInWithGoogle}
+          className="flex items-center shadow-md p-3"
+        >
+          <img
+            className="w-9 h-9"
+            src="/img/google_icon.svg"
+            alt="google icon"
+          />
+          <h1>Sign in with Google.</h1>
+        </button>
+      </div>
+    </div>
   );
 };
 
