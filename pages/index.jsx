@@ -28,7 +28,7 @@ export default function Home() {
                   Learn more
                 </h1>
               </a>
-              <a href="/">
+              <a href="/contact">
                 <h1 className="text-xl border-2 hover:bg-sky-500 hover:text-white border-sky-500 px-6 py-4">
                   Contact
                 </h1>
