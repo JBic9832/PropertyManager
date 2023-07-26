@@ -23,7 +23,7 @@ export default function Navbar({}) {
       <h1 className="text-3xl font-bold">Property Manager</h1>
       <div className="gap-4 hidden sm:flex">
         <Link href="/">Home</Link>
-        <Link href="/pricing">Pricing</Link>
+        <Link href="/pricing">About</Link>
         {
           user ? (
             <>
