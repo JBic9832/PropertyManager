@@ -16,7 +16,7 @@ export default function DefaultDrawerMenu({ isMenuOpen, changeMenuState }) {
   return (
     <MobileDrawerMenu isMenuOpen={isMenuOpen} changeMenuState={changeMenuState}>
       <MobileDrawerOption href="/" text="Home" />
-      <MobileDrawerOption href="/pricing" text="Pricing" />
+      <MobileDrawerOption href="/about" text="About" />
       {user ? (
         <>
           <MobileDrawerOption href="/app" text="Dashboard" />
