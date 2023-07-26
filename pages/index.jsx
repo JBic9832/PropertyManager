@@ -23,7 +23,7 @@ export default function Home() {
               messy spreadsheet again.
             </p>
             <div className="flex mt-6 justify-between sm:justify-evenly">
-              <a href="/">
+              <a href="/about">
                 <h1 className="text-xl border-2 text-white border-sky-500 hover:bg-transparent hover:text-black bg-sky-500 px-6 py-4">
                   Learn more
                 </h1>
