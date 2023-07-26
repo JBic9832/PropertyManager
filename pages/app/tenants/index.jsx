@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { collection, deleteDoc, doc, getDocs, query } from "firebase/firestore";
 import { UserContext } from "@/lib/context";
 import { useRouter } from "next/router";
+import { deleteTenantHelper, getTenantsHelper } from "@/lib/utilities";
 
 export default function Tenants({}) {
   const { user } = useContext(UserContext);
@@ -14,29 +15,13 @@ export default function Tenants({}) {
   const [hoveringAdd, setHoveringAdd] = useState(false);
 
   const getTenats = async () => {
-    let documents = [];
-    try {
-      const tenantsRef = query(collection(db, "users", user.uid, "tenants"));
-      const snapshot = await getDocs(tenantsRef);
-      snapshot.docs.map((doc) => {
-        documents.push({ information: doc.data(), id: doc.id });
-      });
-    } catch (e) {
-      console.error(e);
-    }
+    const tenants = await getTenantsHelper(db, user.uid);
 
-    setTenants(documents);
+    setTenants(tenants);
   };
 
   const deleteTenant = async (id) => {
-    try {
-      const docRef = doc(db, "users", user.uid, "tenants", id);
-      await deleteDoc(docRef);
-
-      router.reload();
-    } catch (e) {
-      console.error(e);
-    }
+    await deleteTenantHelper(db, user.uid, id);
   };
 
   useEffect(() => {

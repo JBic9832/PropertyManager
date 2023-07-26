@@ -5,29 +5,18 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import MainApp from "..";
 import PropertyCard from "@/components/PropertyCard";
+import { getPropertiesHelper } from "@/lib/utilities";
 
 export default function Properties({}) {
   const { user } = useContext(UserContext);
 
-  const [properties, setProperties] = useState();
+  const [properties, setProperties] = useState([]);
   const [hoveringAdd, setHoveringAdd] = useState(false);
 
   const getProperties = async () => {
-    let documents = [];
-    try {
-      const propertiesRef = query(
-        collection(db, "users", user.uid, "properties")
-      );
-      const propsInOrder = query(propertiesRef, orderBy("dateAdded", "desc"));
-      const snapshot = await getDocs(propsInOrder);
-      snapshot.docs.map((doc) => {
-        documents.push({ information: doc.data(), id: doc.id });
-      });
-    } catch (e) {
-      console.error(e);
-    }
+    const properties = await getPropertiesHelper(db, user.uid);
 
-    setProperties(documents);
+    setProperties(properties);
   };
 
   useEffect(() => {
